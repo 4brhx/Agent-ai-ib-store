@@ -1,304 +1,211 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent GPT-5.4 - Image AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #6c63ff; --primary-light: #8b83ff; --bg-dark: #0a0a14;
-            --bg-card: #14142a; --bg-input: #1a1a35; --text-primary: #fff;
-            --text-secondary: #8888aa; --accent-green: #00d4aa; --accent-blue: #00b4d8;
-            --gradient: linear-gradient(135deg, #6c63ff, #00d4aa); --radius: 14px;
-        }
-        body { font-family:'Tajawal',sans-serif; background:var(--bg-dark); color:var(--text-primary); height:100vh; display:flex; flex-direction:column; overflow:hidden; }
-        .bg-fx { position:fixed; inset:0; z-index:0; pointer-events:none; }
-        .bg-fx .orb { position:absolute; border-radius:50%; filter:blur(100px); opacity:0.18; animation:orbF 10s ease-in-out infinite; }
-        .bg-fx .orb:nth-child(1){width:500px;height:500px;background:var(--primary);top:-150px;right:-150px;}
-        .bg-fx .orb:nth-child(2){width:400px;height:400px;background:var(--accent-green);bottom:-100px;left:-100px;animation-delay:4s;}
-        .bg-fx .orb:nth-child(3){width:250px;height:250px;background:var(--accent-blue);top:40%;left:40%;animation-delay:7s;}
-        @keyframes orbF{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.08);}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Agent GPT Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#7c5cfc;--p2:#a78bfa;--bg:#09090f;--s1:#12121e;--s2:#1a1a2e;--t1:#fff;--t2:#9ca3af;--g:linear-gradient(135deg,#7c5cfc,#06b6d4);--r:12px}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--t1);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-        .header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(20,20,42,0.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,0.12);}
-        .header-logo{display:flex;align-items:center;gap:10px;}
-        .logo-icon{width:38px;height:38px;background:var(--gradient);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;box-shadow:0 3px 12px rgba(108,99,255,0.3);}
-        .header-logo h1{font-size:1.1rem;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .header-right{display:flex;align-items:center;gap:8px;}
-        .status-b{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:14px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.2);font-size:0.7rem;color:var(--accent-green);}
-        .status-b .dot{width:6px;height:6px;background:var(--accent-green);border-radius:50%;animation:bk 2s infinite;}
-        @keyframes bk{0%,100%{opacity:1;}50%{opacity:0.3;}}
-        .hdr-btn{padding:4px 10px;border-radius:14px;background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.2);color:#ff5050;font-size:0.7rem;font-family:inherit;cursor:pointer;transition:0.2s;}
-        .hdr-btn:hover{background:rgba(255,80,80,0.15);}
+/* BG */
+.bgx{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bgx i{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:fl 12s ease-in-out infinite}
+.bgx i:nth-child(1){width:600px;height:600px;background:#7c5cfc;top:-200px;right:-200px}
+.bgx i:nth-child(2){width:450px;height:450px;background:#06b6d4;bottom:-150px;left:-150px;animation-delay:5s}
+@keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-15px)}}
 
-        .chat{position:relative;z-index:10;flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;}
-        .chat::-webkit-scrollbar{width:4px;} .chat::-webkit-scrollbar-thumb{background:rgba(108,99,255,0.2);border-radius:3px;}
+/* Header */
+.hd{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(18,18,30,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,92,252,.1)}
+.hd-l{display:flex;align-items:center;gap:10px}
+.hd-l .ico{width:38px;height:38px;background:var(--g);border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:14px;box-shadow:0 4px 12px rgba(124,92,252,.3)}
+.hd-l h1{font-size:1.1rem;font-weight:700;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hd-r{display:flex;gap:8px;align-items:center}
+.badge{font-size:.7rem;padding:4px 10px;border-radius:12px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);color:#06b6d4;display:flex;align-items:center;gap:5px}
+.badge i{width:6px;height:6px;background:#06b6d4;border-radius:50%;animation:pk 2s infinite}
+@keyframes pk{50%{opacity:.3}}
+.nbtn{font-size:.7rem;padding:4px 10px;border-radius:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;font-family:inherit;cursor:pointer}
 
-        .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:24px 14px;}
-        .welcome .av-big{width:80px;height:80px;background:var(--gradient);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:18px;box-shadow:0 14px 40px rgba(108,99,255,0.2);animation:pls 3s ease-in-out infinite;}
-        @keyframes pls{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
-        .welcome h2{font-size:1.4rem;font-weight:700;margin-bottom:8px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .welcome p{color:var(--text-secondary);font-size:0.88rem;max-width:360px;line-height:1.7;margin-bottom:24px;}
-        .sugs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:440px;width:100%;}
-        .sug{background:rgba(20,20,42,0.7);border:1px solid rgba(108,99,255,0.12);border-radius:9px;padding:12px;cursor:pointer;transition:0.2s;text-align:right;}
-        .sug:hover{background:rgba(108,99,255,0.07);border-color:var(--primary);transform:translateY(-1px);}
-        .sug .si{font-size:20px;margin-bottom:4px;} .sug .st{font-size:0.75rem;color:var(--text-secondary);line-height:1.4;}
+/* Chat */
+.cht{position:relative;z-index:10;flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.cht::-webkit-scrollbar{width:4px}
+.cht::-webkit-scrollbar-thumb{background:rgba(124,92,252,.2);border-radius:4px}
 
-        .msg{display:flex;gap:9px;max-width:82%;animation:mIn 0.2s ease;}
-        @keyframes mIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-        .msg.user{align-self:flex-start;} .msg.bot{align-self:flex-end;flex-direction:row-reverse;}
-        .msg .av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-        .msg.user .av{background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.2);}
-        .msg.bot .av{background:var(--gradient);box-shadow:0 2px 8px rgba(108,99,255,0.2);}
-        .msg .bbl{padding:11px 14px;border-radius:var(--radius);line-height:1.7;font-size:0.88rem;word-wrap:break-word;}
-        .msg.user .bbl{background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.12);border-top-right-radius:3px;}
-        .msg.bot .bbl{background:var(--bg-card);border:1px solid rgba(255,255,255,0.03);border-top-left-radius:3px;}
-        .msg.bot .bbl code{background:rgba(108,99,255,0.1);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:0.8rem;}
-        .msg.bot .bbl pre{background:rgba(0,0,0,0.3);padding:9px;border-radius:6px;overflow-x:auto;margin:5px 0;font-family:monospace;font-size:0.8rem;line-height:1.5;direction:ltr;text-align:left;}
+/* Welcome */
+.wlc{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:20px}
+.wlc .big{width:80px;height:80px;background:var(--g);border-radius:22px;display:grid;place-items:center;font-size:36px;margin-bottom:16px;box-shadow:0 12px 40px rgba(124,92,252,.25);animation:br 3s ease-in-out infinite}
+@keyframes br{50%{transform:scale(1.03)}}
+.wlc h2{font-size:1.5rem;margin-bottom:8px;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.wlc p{color:var(--t2);font-size:.9rem;max-width:380px;line-height:1.8;margin-bottom:24px}
+.sgrd{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:420px;width:100%}
+.sg{background:rgba(26,26,46,.8);border:1px solid rgba(124,92,252,.1);border-radius:10px;padding:12px;cursor:pointer;transition:.2s;text-align:right}
+.sg:hover{border-color:var(--p);background:rgba(124,92,252,.05);transform:translateY(-1px)}
+.sg b{display:block;font-size:18px;margin-bottom:3px}
+.sg span{font-size:.72rem;color:var(--t2)}
 
-        .file-preview{margin-bottom:6px;}
-        .file-preview img{max-width:240px;max-height:180px;border-radius:9px;border:1px solid rgba(108,99,255,0.15);}
-        .file-preview .fbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);border-radius:7px;padding:6px 10px;font-size:0.75rem;color:var(--text-secondary);}
+/* Msg */
+.m{display:flex;gap:9px;max-width:80%;animation:mi .2s ease}
+@keyframes mi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.m.u{align-self:flex-start}
+.m.b{align-self:flex-end;flex-direction:row-reverse}
+.m .a{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.m.u .a{background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.15)}
+.m.b .a{background:var(--g);box-shadow:0 2px 8px rgba(124,92,252,.2)}
+.m .c{padding:10px 14px;border-radius:var(--r);line-height:1.7;font-size:.87rem;word-wrap:break-word}
+.m.u .c{background:rgba(124,92,252,.06);border:1px solid rgba(124,92,252,.1);border-top-right-radius:3px}
+.m.b .c{background:var(--s1);border:1px solid rgba(255,255,255,.03);border-top-left-radius:3px}
+.m.b .c code{background:rgba(124,92,252,.1);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.8rem}
+.m.b .c pre{background:rgba(0,0,0,.4);padding:10px;border-radius:8px;overflow-x:auto;margin:6px 0;font-family:monospace;font-size:.78rem;line-height:1.5;direction:ltr;text-align:left}
 
-        .gen-img{margin-top:8px;position:relative;display:inline-block;}
-        .gen-img img{max-width:320px;max-height:320px;border-radius:12px;border:2px solid rgba(108,99,255,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
-        .save-btn{position:absolute;bottom:10px;left:10px;background:var(--gradient);border:none;border-radius:8px;padding:6px 12px;color:#fff;font-size:0.75rem;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:4px;box-shadow:0 3px 10px rgba(0,0,0,0.4);transition:0.2s;}
-        .save-btn:hover{transform:scale(1.05);}
+/* Images */
+.gimg{margin-top:8px;position:relative;display:inline-block}
+.gimg img{max-width:300px;max-height:300px;border-radius:10px;border:2px solid rgba(124,92,252,.25);box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.gimg .dl{position:absolute;bottom:8px;left:8px;background:var(--g);border:none;border-radius:7px;padding:5px 10px;color:#fff;font-size:.7rem;font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.gimg .dl:hover{transform:scale(1.05)}
+.fpv{margin-bottom:5px}
+.fpv img{max-width:200px;border-radius:8px;border:1px solid rgba(124,92,252,.15)}
 
-        .typing{display:flex;gap:9px;align-self:flex-end;flex-direction:row-reverse;}
-        .typing .av{width:32px;height:32px;border-radius:8px;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:14px;}
-        .typing .dots{display:flex;align-items:center;gap:3px;padding:11px 14px;background:var(--bg-card);border:1px solid rgba(255,255,255,0.03);border-radius:var(--radius);border-top-left-radius:3px;}
-        .typing .dots span{width:6px;height:6px;background:var(--primary-light);border-radius:50%;animation:dJ 1.4s infinite;}
-        .typing .dots span:nth-child(2){animation-delay:0.15s;} .typing .dots span:nth-child(3){animation-delay:0.3s;}
-        @keyframes dJ{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-4px);}}
+/* Typing */
+.tp{display:flex;gap:9px;align-self:flex-end;flex-direction:row-reverse}
+.tp .a{width:30px;height:30px;border-radius:8px;background:var(--g);display:grid;place-items:center;font-size:13px}
+.tp .d{display:flex;gap:3px;align-items:center;padding:10px 14px;background:var(--s1);border:1px solid rgba(255,255,255,.03);border-radius:var(--r);border-top-left-radius:3px}
+.tp .d i{width:6px;height:6px;background:var(--p2);border-radius:50%;animation:jm 1.2s infinite}
+.tp .d i:nth-child(2){animation-delay:.15s}
+.tp .d i:nth-child(3){animation-delay:.3s}
+@keyframes jm{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 
-        .input-sec{position:relative;z-index:10;padding:12px 18px 18px;background:rgba(20,20,42,0.88);backdrop-filter:blur(16px);border-top:1px solid rgba(108,99,255,0.08);}
-        .att-prev{display:none;max-width:740px;margin:0 auto 7px;padding:7px 10px;background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.12);border-radius:9px;}
-        .att-prev.active{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-        .att-item{display:flex;align-items:center;gap:5px;background:var(--bg-card);border-radius:7px;padding:4px 8px;font-size:0.72rem;color:var(--text-secondary);}
-        .att-item img{width:32px;height:32px;border-radius:5px;object-fit:cover;}
-        .att-item .rm{cursor:pointer;color:#ff5050;font-size:12px;margin-right:3px;}
+/* Input */
+.inp-s{position:relative;z-index:10;padding:12px 18px 16px;background:rgba(18,18,30,.9);backdrop-filter:blur(12px);border-top:1px solid rgba(124,92,252,.08)}
+.atp{display:none;max-width:700px;margin:0 auto 6px;padding:6px 10px;background:rgba(124,92,252,.04);border:1px solid rgba(124,92,252,.1);border-radius:8px}
+.atp.on{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ati{display:flex;align-items:center;gap:4px;background:var(--s1);border-radius:6px;padding:3px 7px;font-size:.7rem;color:var(--t2)}
+.ati img{width:28px;height:28px;border-radius:4px;object-fit:cover}
+.ati .x{cursor:pointer;color:#ef4444;font-size:11px}
+.inb{display:flex;align-items:flex-end;gap:7px;max-width:700px;margin:0 auto;background:var(--s2);border:1px solid rgba(124,92,252,.1);border-radius:var(--r);padding:7px 9px 7px 12px;transition:.2s}
+.inb:focus-within{border-color:var(--p);box-shadow:0 0 12px rgba(124,92,252,.08)}
+.inb textarea{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:inherit;font-size:.87rem;resize:none;max-height:80px;padding:6px 0;line-height:1.5}
+.inb textarea::placeholder{color:var(--t2)}
+.abtn{width:34px;height:34px;border-radius:8px;background:rgba(124,92,252,.08);border:1px solid rgba(124,92,252,.12);display:grid;place-items:center;cursor:pointer;transition:.2s}
+.abtn:hover{background:rgba(124,92,252,.15)}
+.abtn svg{width:15px;height:15px;stroke:var(--t2);fill:none;stroke-width:2}
+.sbtn{width:36px;height:36px;background:var(--g);border:none;border-radius:8px;display:grid;place-items:center;cursor:pointer;transition:.2s;flex-shrink:0}
+.sbtn:hover{transform:scale(1.05)}
+.sbtn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.sbtn svg{width:15px;height:15px;fill:#fff;transform:rotate(180deg)}
+.ft{text-align:center;margin-top:4px;font-size:.6rem;color:var(--t2);opacity:.4}
+#fi{display:none}
 
-        .in-box{display:flex;align-items:flex-end;gap:7px;max-width:740px;margin:0 auto;background:var(--bg-input);border:1px solid rgba(108,99,255,0.12);border-radius:13px;padding:7px 9px 7px 12px;transition:0.2s;}
-        .in-box:focus-within{border-color:var(--primary);box-shadow:0 0 14px rgba(108,99,255,0.1);}
-        .in-box textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text-primary);font-family:inherit;font-size:0.88rem;resize:none;max-height:90px;padding:7px 0;line-height:1.5;}
-        .in-box textarea::placeholder{color:var(--text-secondary);}
-        .in-acts{display:flex;align-items:center;gap:5px;}
-        .att-btn{width:36px;height:36px;border-radius:9px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;}
-        .att-btn:hover{background:rgba(108,99,255,0.15);}
-        .att-btn svg{width:16px;height:16px;stroke:var(--text-secondary);fill:none;stroke-width:2;}
-        .snd-btn{width:38px;height:38px;background:var(--gradient);border:none;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;}
-        .snd-btn:hover{transform:scale(1.05);box-shadow:0 3px 10px rgba(108,99,255,0.3);}
-        .snd-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
-        .snd-btn svg{width:16px;height:16px;fill:#fff;transform:rotate(180deg);}
-        .ftr{text-align:center;margin-top:5px;font-size:0.65rem;color:var(--text-secondary);opacity:0.4;}
-        #fileIn{display:none;}
-
-        @media(max-width:600px){
-            .header{padding:9px 12px;} .header-logo h1{font-size:0.95rem;}
-            .chat{padding:12px;} .msg{max-width:92%;} .sugs{grid-template-columns:1fr;}
-            .welcome h2{font-size:1.2rem;} .welcome .av-big{width:64px;height:64px;font-size:30px;}
-            .input-sec{padding:9px 12px 12px;} .gen-img img{max-width:260px;max-height:260px;}
-        }
-    </style>
+@media(max-width:600px){.sgrd{grid-template-columns:1fr}.m{max-width:90%}.gimg img{max-width:240px}}
+</style>
 </head>
 <body>
-<div class="bg-fx"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="bgx"><i></i><i></i></div>
 
-<header class="header">
-    <div class="header-logo"><div class="logo-icon">AI</div><h1>Agent GPT-5.4</h1></div>
-    <div class="header-right">
-        <div class="status-b"><span class="dot"></span><span>متصل</span></div>
-        <button class="hdr-btn" onclick="clearChat()">محادثة جديدة</button>
-    </div>
+<header class="hd">
+<div class="hd-l"><div class="ico">AI</div><h1>Agent GPT Pro</h1></div>
+<div class="hd-r"><div class="badge"><i></i>متصل</div><button class="nbtn" onclick="clr()">جديدة</button></div>
 </header>
 
-<div class="chat" id="chat">
-    <div class="welcome" id="welc">
-        <div class="av-big">🤖</div>
-        <h2>Agent GPT-5.4 - Image AI</h2>
-        <p>أنشئ وعدّل الصور بالذكاء الاصطناعي! ارفع صورة واطلب تعديلها أو اكتب وصفاً لإنشاء صورة جديدة. يمكنك حفظ أي صورة مباشرة.</p>
-        <div class="sugs">
-            <div class="sug" onclick="useSug('ارسم لي قطة كرتونية لطيفة بخلفية فضائية')"><div class="si">🎨</div><div class="st">ارسم صورة كرتونية</div></div>
-            <div class="sug" onclick="useSug('صمم لي شعار احترافي لشركة تقنية اسمها TechFlow')"><div class="si">✨</div><div class="st">صمم شعار احترافي</div></div>
-            <div class="sug" onclick="useSug('اكتب لي كود Python لتحليل البيانات')"><div class="si">💻</div><div class="st">اكتب كود Python</div></div>
-            <div class="sug" onclick="useSug('حلل الصورة المرفقة بالتفصيل')"><div class="si">🖼️</div><div class="st">تحليل صورة مرفقة</div></div>
-        </div>
-    </div>
+<div class="cht" id="ch">
+<div class="wlc" id="wl">
+<div class="big">🤖</div>
+<h2>Agent GPT Pro</h2>
+<p>مساعدك الذكي الاحترافي - أنشئ صوراً، عدّلها، اكتب أكواد، واسأل أي شيء. ارفع صورة أو اكتب وصفاً!</p>
+<div class="sgrd">
+<div class="sg" onclick="go('ارسم لي منظر طبيعي جميل عند غروب الشمس')"><b>🎨</b><span>ارسم منظر طبيعي</span></div>
+<div class="sg" onclick="go('صمم شعار احترافي لتطبيق اسمه Nova')"><b>✨</b><span>صمم شعار</span></div>
+<div class="sg" onclick="go('اكتب كود JavaScript لإنشاء لعبة بسيطة')"><b>💻</b><span>اكتب كود</span></div>
+<div class="sg" onclick="go('اشرح لي الذكاء الاصطناعي ببساطة')"><b>🧠</b><span>اشرح مفهوم</span></div>
+</div>
+</div>
 </div>
 
-<div class="input-sec">
-    <div class="att-prev" id="attPrev"></div>
-    <div class="in-box">
-        <div class="in-acts">
-            <label class="att-btn" for="fileIn" title="رفع صورة/ملف">
-                <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-            </label>
-        </div>
-        <input type="file" id="fileIn" multiple accept="image/*,.pdf,.txt,.doc,.docx,.csv,.json,.js,.py,.html,.css" onchange="handleFiles(event)">
-        <textarea id="inp" placeholder="اكتب رسالتك أو صف الصورة المطلوبة..." rows="1" onkeydown="hKey(event)" oninput="aGrow(this)"></textarea>
-        <button class="snd-btn" id="sndBtn" onclick="send()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-    </div>
-    <div class="ftr">Agent GPT-5.4 — يدعم إنشاء وتعديل الصور + محادثة ذكية</div>
+<div class="inp-s">
+<div class="atp" id="ap"></div>
+<div class="inb">
+<label class="abtn" for="fi"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></label>
+<input type="file" id="fi" multiple accept="image/*,.pdf,.txt,.csv,.json,.js,.py" onchange="onF(event)">
+<textarea id="tx" placeholder="اكتب هنا أو صف الصورة..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();go()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+<button class="sbtn" id="sb" onclick="go()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+</div>
+<div class="ft">Agent GPT Pro — محادثة + إنشاء صور بالذكاء الاصطناعي</div>
 </div>
 
 <script>
-const _k='c2stb3ItdjEtMGFkZmYwOTViMTAzNDY4MThmZjA3MGZmZTk5ZTdlMWYxZTgwZWY3ZGIwM2YyMjRlZGY0ZjMyODhjNDhhZjI0YQ==';
-const KEY=atob(_k);
-const API='https://openrouter.ai/api/v1/chat/completions';
-const IMG_MODEL='openai/gpt-5-image';
-const TEXT_MODEL='openai/gpt-4o';
+const K=atob('c2stb3ItdjEtMGFkZmYwOTViMTAzNDY4MThmZjA3MGZmZTk5ZTdlMWYxZTgwZWY3ZGIwM2YyMjRlZGY0ZjMyODhjNDhhZjI0YQ==');
+const U='https://openrouter.ai/api/v1/chat/completions';
+const ch=document.getElementById('ch'),tx=document.getElementById('tx'),sb=document.getElementById('sb'),ap=document.getElementById('ap');
+let H=[],F=[];
 
-const chat=document.getElementById('chat');
-const inp=document.getElementById('inp');
-const sndBtn=document.getElementById('sndBtn');
-const attPrev=document.getElementById('attPrev');
+function onF(e){for(let f of e.target.files){let r=new FileReader(),img=f.type.startsWith('image/');r.onload=x=>{F.push({t:img?'img':'f',n:f.name,d:x.target.result});rF()};r.readAsDataURL(f)}e.target.value=''}
+function rF(){if(!F.length){ap.className='atp';return}ap.className='atp on';ap.innerHTML=F.map((f,i)=>f.t==='img'?`<div class="ati"><img src="${f.d}"><span>${f.n}</span><span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`:`<div class="ati">📄 ${f.n}<span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`).join('')}
 
-let history=[];
-let atts=[];
+function clr(){H=[];F=[];ch.innerHTML='<div class="wlc" id="wl"><div class="big">🤖</div><h2>Agent GPT Pro</h2><p>مساعدك الذكي - أنشئ صوراً، عدّلها، واسأل أي شيء!</p><div class="sgrd"><div class="sg" onclick="go(\'ارسم لي منظر طبيعي جميل\')"><b>🎨</b><span>ارسم صورة</span></div><div class="sg" onclick="go(\'صمم شعار احترافي\')"><b>✨</b><span>صمم شعار</span></div><div class="sg" onclick="go(\'اكتب كود JavaScript\')"><b>💻</b><span>اكتب كود</span></div><div class="sg" onclick="go(\'اشرح الذكاء الاصطناعي\')"><b>🧠</b><span>اشرح مفهوم</span></div></div></div>';rF()}
 
-function aGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';}
-function hKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
-function useSug(t){inp.value=t;aGrow(inp);send();}
+function dl(u,n){let a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove()}
 
-function handleFiles(e){
-    for(let f of e.target.files){
-        const r=new FileReader();const isImg=f.type.startsWith('image/');
-        r.onload=ev=>{atts.push({type:isImg?'image':'file',name:f.name,b64:ev.target.result,mime:f.type});renderAtt();};
-        r.readAsDataURL(f);
-    }
-    e.target.value='';
-}
-function renderAtt(){
-    if(!atts.length){attPrev.className='att-prev';return;}
-    attPrev.className='att-prev active';
-    attPrev.innerHTML=atts.map((a,i)=>a.type==='image'?
-        `<div class="att-item"><img src="${a.b64}"><span>${a.name}</span><span class="rm" onclick="rmAtt(${i})">✕</span></div>`:
-        `<div class="att-item"><span>📄</span><span>${a.name}</span><span class="rm" onclick="rmAtt(${i})">✕</span></div>`
-    ).join('');
-}
-function rmAtt(i){atts.splice(i,1);renderAtt();}
+function fmt(t){
+t=t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');
+t=t.replace(/`([^`]+)`/g,'<code>$1</code>');
+t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+t=t.replace(/\n/g,'<br>');return t}
 
-function clearChat(){
-    history=[];atts=[];
-    chat.innerHTML=`<div class="welcome" id="welc"><div class="av-big">🤖</div><h2>Agent GPT-5.4 - Image AI</h2><p>أنشئ وعدّل الصور بالذكاء الاصطناعي! ارفع صورة واطلب تعديلها أو اكتب وصفاً لإنشاء صورة جديدة.</p><div class="sugs"><div class="sug" onclick="useSug('ارسم لي قطة كرتونية لطيفة بخلفية فضائية')"><div class="si">🎨</div><div class="st">ارسم صورة كرتونية</div></div><div class="sug" onclick="useSug('صمم لي شعار احترافي لشركة تقنية')"><div class="si">✨</div><div class="st">صمم شعار احترافي</div></div><div class="sug" onclick="useSug('اكتب لي كود Python')"><div class="si">💻</div><div class="st">اكتب كود Python</div></div><div class="sug" onclick="useSug('حلل الصورة المرفقة')"><div class="si">🖼️</div><div class="st">تحليل صورة</div></div></div></div>`;
-    renderAtt();
-}
+function add(txt,who,files,imgs){
+let w=document.getElementById('wl');if(w)w.remove();
+let d=document.createElement('div');d.className='m '+(who==='u'?'u':'b');
+let fh='';if(files&&files.length)fh='<div class="fpv">'+files.map(f=>f.t==='img'?`<img src="${f.d}">`:`<span>📄${f.n}</span>`).join('')+'</div>';
+let ih='';if(imgs&&imgs.length)ih=imgs.map((img,i)=>{let id='gi'+Date.now()+i;return`<div class="gimg"><img id="${id}" src="${img}"><button class="dl" onclick="dl(document.getElementById('${id}').src,'image-${Date.now()}.png')">💾 حفظ</button></div>`}).join('');
+let t=who==='u'?(txt||'').replace(/\n/g,'<br>'):fmt(txt||'');
+d.innerHTML=`<div class="a">${who==='u'?'👤':'🤖'}</div><div class="c">${fh}${t}${ih}</div>`;
+ch.appendChild(d);ch.scrollTop=ch.scrollHeight}
 
-function fmtMsg(t){
-    t=t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');
-    t=t.replace(/`([^`]+)`/g,'<code>$1</code>');
-    t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-    t=t.replace(/\n/g,'<br>');
-    return t;
-}
+function sTyp(){let d=document.createElement('div');d.className='tp';d.id='ty';d.innerHTML='<div class="a">🤖</div><div class="d"><i></i><i></i><i></i></div>';ch.appendChild(d);ch.scrollTop=ch.scrollHeight}
+function hTyp(){let t=document.getElementById('ty');if(t)t.remove()}
 
-function saveImg(url,name){
-    const a=document.createElement('a');a.href=url;a.download=name||'generated-image.png';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-}
+function isImg(t){return/ارسم|صمم|أنشئ صورة|اصنع|عدل|غير|حول|شعار|لوجو|بوستر|خلفية|رسم|تصميم|draw|design|generate|create|edit|make image|paint/i.test(t)}
 
-function addMsg(content,role,files=[],genImages=[]){
-    const w=document.getElementById('welc');if(w)w.remove();
-    const div=document.createElement('div');
-    div.className=`msg ${role==='user'?'user':'bot'}`;
-    let fHTML='';
-    if(files.length) fHTML='<div class="file-preview">'+files.map(f=>f.type==='image'?`<img src="${f.b64}" alt="${f.name}">`:`<div class="fbadge">📄 ${f.name}</div>`).join('')+'</div>';
-    let imgHTML='';
-    if(genImages.length){
-        const ts=Date.now();
-        imgHTML=genImages.map((img,i)=>{
-            const imgId='img_'+ts+'_'+i;
-            return `<div class="gen-img"><img id="${imgId}" src="${img}" alt="صورة منشأة" onerror="this.alt='فشل تحميل الصورة'"><button class="save-btn" onclick="saveImg(document.getElementById('${imgId}').src,'agent-image-${ts}-${i}.png')">💾 حفظ الصورة</button></div>`;
-        }).join('');
-    }
-    const fmt=role==='user'?content.replace(/\n/g,'<br>'):fmtMsg(content);
-    div.innerHTML=`<div class="av">${role==='user'?'👤':'🤖'}</div><div class="bbl">${fHTML}${fmt}${imgHTML}</div>`;
-    chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
-}
+async function go(t){
+if(t)tx.value=t;
+let text=tx.value.trim();if(!text&&!F.length)return;
+let cf=[...F];add(text||'مرفق','u',cf);
 
-function showTyp(){const d=document.createElement('div');d.className='typing';d.id='typEl';d.innerHTML=`<div class="av">🤖</div><div class="dots"><span></span><span></span><span></span></div>`;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;}
-function hideTyp(){const t=document.getElementById('typEl');if(t)t.remove();}
+let uc=[];
+if(cf.length)for(let f of cf){if(f.t==='img')uc.push({type:'image_url',image_url:{url:f.d}});else uc.push({type:'text',text:'[ملف:'+f.n+']'})}
+if(text)uc.push({type:'text',text});
+H.push({role:'user',content:uc.length===1&&uc[0].type==='text'?text:uc});
 
-function needsImage(text){
-    const keywords=['ارسم','صمم','أنشئ صورة','اصنع صورة','عدل الصورة','غير الصورة','حول الصورة','draw','generate','create image','design','edit image','make image','صورة','رسم','تصميم','لوجو','شعار','بوستر','خلفية','اجعل','حولها','عدلها','غيرها','ضيف','أضف','remove','add to image'];
-    const lower=text.toLowerCase();
-    return keywords.some(k=>lower.includes(k));
-}
+tx.value='';tx.style.height='auto';F=[];rF();sb.disabled=true;sTyp();
 
-async function send(){
-    const text=inp.value.trim();
-    if(!text&&!atts.length)return;
+let wImg=isImg(text);
+let sys={role:'system',content:'أنت Agent GPT Pro، مساعد ذكاء اصطناعي محترف. تتحدث العربية. عند طلب صورة أنشئها مباشرة. كن مفيداً ومفصلاً.'};
 
-    const curAtts=[...atts];
-    addMsg(text||'(مرفق)','user',curAtts);
+try{
+let body={model:'openai/gpt-4o',messages:[sys,...H],max_tokens:4096};
+if(!wImg)body.temperature=0.7;
+if(wImg){body.model='openai/gpt-5-image';body.modalities=['text','image']}
 
-    let userContent=[];
-    if(curAtts.length) for(let a of curAtts){if(a.type==='image')userContent.push({type:'image_url',image_url:{url:a.b64}});else userContent.push({type:'text',text:`[ملف: ${a.name}]`});}
-    if(text) userContent.push({type:'text',text});
-    history.push({role:'user',content:userContent.length===1&&userContent[0].type==='text'?text:userContent});
+let r=await fetch(U,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+K,'HTTP-Referer':location.href,'X-Title':'Agent GPT Pro'},body:JSON.stringify(body)});
+hTyp();
 
-    inp.value='';inp.style.height='auto';atts=[];renderAtt();sndBtn.disabled=true;showTyp();
+if(!r.ok){let e=await r.text();add('خطأ '+r.status+': '+e.substring(0,100),'b');sb.disabled=false;return}
 
-    const hasImages=curAtts.some(a=>a.type==='image');
-    const wantsImage=needsImage(text)||hasImages;
+let data=await r.json();
+if(data.choices&&data.choices[0]){
+let msg=data.choices[0].message,txt='',imgs=[];
+if(Array.isArray(msg.content)){for(let p of msg.content){if(p.type==='text')txt+=p.text;else if(p.type==='image_url'&&p.image_url)imgs.push(p.image_url.url)}}
+else if(typeof msg.content==='string'){txt=msg.content;let rx=/(data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+)/g,found=txt.match(rx);if(found){imgs=found;txt=txt.replace(rx,'').trim()}}
+if(!txt&&imgs.length)txt='تم إنشاء الصورة! اضغط حفظ لتحميلها:';
+if(!txt&&!imgs.length)txt='تم.';
+add(txt,'b',null,imgs);
+H.push({role:'assistant',content:msg.content})
+}else if(data.error){add('خطأ: '+(data.error.message||JSON.stringify(data.error)),'b')}
+else{add('لا يوجد رد.','b')}
+}catch(e){hTyp();add('خطأ اتصال: '+e.message,'b')}
+sb.disabled=false;tx.focus()}
 
-    const sysMsg={role:'system',content:'أنت Agent GPT-5.4، مساعد ذكاء اصطناعي متقدم يدعم إنشاء وتعديل الصور. تتحدث العربية بطلاقة. عند طلب رسم أو تصميم أو تعديل صورة، أنشئ الصورة مباشرة. كن مفصلاً ومحترفاً.'};
-
-    try{
-        const model=wantsImage?IMG_MODEL:TEXT_MODEL;
-        let body;
-        if(wantsImage){
-            body={model,messages:[sysMsg,...history],max_tokens:4096,modalities:['text','image']};
-        } else {
-            body={model,messages:[sysMsg,...history],temperature:0.7,max_tokens:4096};
-        }
-
-        const res=await fetch(API,{
-            method:'POST',
-            headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY,'HTTP-Referer':location.href,'X-Title':'Agent GPT-5.4'},
-            body:JSON.stringify(body)
-        });
-
-        hideTyp();
-        if(!res.ok){const e=await res.text();addMsg('خطأ: '+res.status+' - '+e.substring(0,150),'bot');sndBtn.disabled=false;return;}
-
-        const data=await res.json();
-        if(data.choices&&data.choices[0]){
-            const msg=data.choices[0].message;
-            let textContent='';
-            let images=[];
-
-            if(msg.content&&Array.isArray(msg.content)){
-                for(let part of msg.content){
-                    if(part.type==='text') textContent+=part.text;
-                    else if(part.type==='image_url'&&part.image_url) images.push(part.image_url.url);
-                }
-            } else if(typeof msg.content==='string'){
-                textContent=msg.content;
-                const b64Regex=/(data:image\/[a-z]+;base64,[A-Za-z0-9+/=]+)/g;
-                const found=textContent.match(b64Regex);
-                if(found){images=found;textContent=textContent.replace(b64Regex,'').replace(/!\[.*?\]\(.*?\)/g,'').trim();}
-            }
-
-            if(!textContent&&images.length) textContent='تم إنشاء الصورة بنجاح! يمكنك حفظها بالضغط على الزر أدناه:';
-            if(!textContent&&!images.length) textContent='تم تنفيذ الطلب.';
-            addMsg(textContent,'bot',[],images);
-            history.push({role:'assistant',content:msg.content});
-        } else if(data.error){
-            addMsg('خطأ: '+(data.error.message||JSON.stringify(data.error)),'bot');
-        } else {
-            addMsg('لم أتمكن من الحصول على رد.','bot');
-        }
-    }catch(err){
-        hideTyp();
-        addMsg('خطأ في الاتصال: '+err.message,'bot');
-    }
-    sndBtn.disabled=false;inp.focus();
-}
-
-inp.focus();
+tx.focus();
 </script>
 </body>
 </html>
