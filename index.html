@@ -206,7 +206,13 @@ function addMsg(content,role,files=[],genImages=[]){
     let fHTML='';
     if(files.length) fHTML='<div class="file-preview">'+files.map(f=>f.type==='image'?`<img src="${f.b64}" alt="${f.name}">`:`<div class="fbadge">📄 ${f.name}</div>`).join('')+'</div>';
     let imgHTML='';
-    if(genImages.length) imgHTML=genImages.map((img,i)=>`<div class="gen-img"><img src="${img}" alt="صورة منشأة"><button class="save-btn" onclick="saveImg('${img}','image-${Date.now()}-${i}.png')">💾 حفظ الصورة</button></div>`).join('');
+    if(genImages.length){
+        const ts=Date.now();
+        imgHTML=genImages.map((img,i)=>{
+            const imgId='img_'+ts+'_'+i;
+            return `<div class="gen-img"><img id="${imgId}" src="${img}" alt="صورة منشأة" onerror="this.alt='فشل تحميل الصورة'"><button class="save-btn" onclick="saveImg(document.getElementById('${imgId}').src,'agent-image-${ts}-${i}.png')">💾 حفظ الصورة</button></div>`;
+        }).join('');
+    }
     const fmt=role==='user'?content.replace(/\n/g,'<br>'):fmtMsg(content);
     div.innerHTML=`<div class="av">${role==='user'?'👤':'🤖'}</div><div class="bbl">${fHTML}${fmt}${imgHTML}</div>`;
     chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
@@ -242,8 +248,12 @@ async function send(){
 
     try{
         const model=wantsImage?IMG_MODEL:TEXT_MODEL;
-        const body={model,messages:[sysMsg,...history],temperature:0.7,max_tokens:4096};
-        if(wantsImage) body.modalities=['text','image'];
+        let body;
+        if(wantsImage){
+            body={model,messages:[sysMsg,...history],max_tokens:4096,modalities:['text','image']};
+        } else {
+            body={model,messages:[sysMsg,...history],temperature:0.7,max_tokens:4096};
+        }
 
         const res=await fetch(API,{
             method:'POST',
@@ -263,17 +273,18 @@ async function send(){
             if(msg.content&&Array.isArray(msg.content)){
                 for(let part of msg.content){
                     if(part.type==='text') textContent+=part.text;
-                    else if(part.type==='image_url') images.push(part.image_url.url);
+                    else if(part.type==='image_url'&&part.image_url) images.push(part.image_url.url);
                 }
             } else if(typeof msg.content==='string'){
                 textContent=msg.content;
-                const imgRegex=/data:image\/[^;]+;base64,[A-Za-z0-9+/=]+/g;
-                const found=textContent.match(imgRegex);
-                if(found){images=found;textContent=textContent.replace(imgRegex,'').trim();}
+                const b64Regex=/(data:image\/[a-z]+;base64,[A-Za-z0-9+/=]+)/g;
+                const found=textContent.match(b64Regex);
+                if(found){images=found;textContent=textContent.replace(b64Regex,'').replace(/!\[.*?\]\(.*?\)/g,'').trim();}
             }
 
+            if(!textContent&&images.length) textContent='تم إنشاء الصورة بنجاح! يمكنك حفظها بالضغط على الزر أدناه:';
             if(!textContent&&!images.length) textContent='تم تنفيذ الطلب.';
-            addMsg(textContent||'','bot',[],images);
+            addMsg(textContent,'bot',[],images);
             history.push({role:'assistant',content:msg.content});
         } else if(data.error){
             addMsg('خطأ: '+(data.error.message||JSON.stringify(data.error)),'bot');
