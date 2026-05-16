@@ -110,7 +110,7 @@ header{position:relative;z-index:20;display:flex;align-items:center;justify-cont
 
 <header>
 <div class="logo"><div class="logo-mark">IB</div><div><h1>IB AI</h1><span>Powered by DeepSeek + Flux</span></div></div>
-<div class="hdr-r"><div class="pill on">Online</div><button class="clr-btn" onclick="clr()">New Chat</button></div>
+<div class="hdr-r"><div class="pill on">Online</div><button class="clr-btn" onclick="showHist()">History</button><button class="clr-btn" onclick="clr()">+ New</button></div>
 </header>
 
 <div class="chat" id="ch">
@@ -142,22 +142,30 @@ header{position:relative;z-index:20;display:flex;align-items:center;justify-cont
 const K=atob('c2stb3ItdjEtMGFkZmYwOTViMTAzNDY4MThmZjA3MGZmZTk5ZTdlMWYxZTgwZWY3ZGIwM2YyMjRlZGY0ZjMyODhjNDhhZjI0YQ==');
 const U='https://openrouter.ai/api/v1/chat/completions';
 const CHAT_MODEL='deepseek/deepseek-chat-v3-0324';
-const IMG_MODEL='black-forest-labs/flux-schnell';
+const IMG_MODEL='black-forest-labs/flux.2-klein-4b';
 
 const ch=document.getElementById('ch'),tx=document.getElementById('tx'),sb=document.getElementById('sb'),ap=document.getElementById('ap');
 let H=[],F=[];
+let chats=JSON.parse(localStorage.getItem('ib_chats')||'[]');
+let currentChatId=null;
+
+function saveCh(){if(!currentChatId)return;let idx=chats.findIndex(c=>c.id===currentChatId);if(idx>-1){chats[idx].messages=H;chats[idx].preview=H[0]?.content?.substring?.(0,40)||'New Chat'}localStorage.setItem('ib_chats',JSON.stringify(chats))}
+function newChat(){currentChatId=Date.now().toString();chats.unshift({id:currentChatId,messages:[],preview:'New Chat',date:new Date().toLocaleDateString()});if(chats.length>20)chats.pop();localStorage.setItem('ib_chats',JSON.stringify(chats))}
+function loadChat(id){let c=chats.find(x=>x.id===id);if(!c)return;currentChatId=id;H=c.messages||[];ch.innerHTML='';for(let i=0;i<H.length;i++){let m=H[i];add(typeof m.content==='string'?m.content:'(media)',m.role==='user'?'u':'ai',null,null,true)}if(!H.length)clr()}
+
+newChat();
 
 function onF(e){for(let f of e.target.files){let r=new FileReader(),img=f.type.startsWith('image/');r.onload=x=>{F.push({t:img?'img':'f',n:f.name,d:x.target.result});rF()};r.readAsDataURL(f)}e.target.value=''}
 function rF(){if(!F.length){ap.className='atp';return}ap.className='atp on';ap.innerHTML=F.map((f,i)=>f.t==='img'?`<div class="ati"><img src="${f.d}"><span>${f.n}</span><span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`:`<div class="ati">📄 ${f.n}<span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`).join('')}
 
-function clr(){H=[];F=[];ch.innerHTML='<div class="wl" id="wl"><div class="wl-ico">✦</div><h2>Welcome to <span>IB</span></h2><p>Your intelligent AI assistant — chat, create images, analyze files.</p><div class="cards"><div class="card" onclick="go(\'Create a beautiful sunset painting\')"><b>🎨</b><span>Generate Image</span></div><div class="card" onclick="go(\'Write Python code\')"><b>💻</b><span>Write Code</span></div><div class="card" onclick="go(\'Explain AI simply\')"><b>🧠</b><span>Explain</span></div><div class="card" onclick="go(\'Design a logo\')"><b>✨</b><span>Design</span></div></div></div>';rF()}
+function clr(){H=[];F=[];newChat();ch.innerHTML='<div class="wl" id="wl"><div class="wl-ico">✦</div><h2>Welcome to <span>IB</span></h2><p>Your intelligent AI assistant — chat, create images, analyze files.</p><div class="cards"><div class="card" onclick="go(\'Create a beautiful sunset painting\')"><b>🎨</b><span>Generate Image</span></div><div class="card" onclick="go(\'Write Python code\')"><b>💻</b><span>Write Code</span></div><div class="card" onclick="go(\'Explain AI simply\')"><b>🧠</b><span>Explain</span></div><div class="card" onclick="go(\'Design a logo\')"><b>✨</b><span>Design</span></div></div></div>';rF()}
 
 function dl(u,n){let a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove()}
 function fmt(t){t=t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');t=t.replace(/`([^`]+)`/g,'<code>$1</code>');t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');t=t.replace(/\n/g,'<br>');return t}
 
-function add(txt,who,files,imgs){
+function add(txt,who,files,imgs,noAnim){
 let w=document.getElementById('wl');if(w)w.remove();
-let d=document.createElement('div');d.className='msg '+(who==='u'?'u':'ai');
+let d=document.createElement('div');d.className='msg '+(who==='u'?'u':'ai');if(!noAnim)d.style.animation='mi .2s ease';
 let fh='';if(files&&files.length)fh='<div class="fpv">'+files.map(f=>f.t==='img'?`<img src="${f.d}">`:`<span>📄${f.n}</span>`).join('')+'</div>';
 let ih='';if(imgs&&imgs.length)ih=imgs.map((img,i)=>{let id='gi'+Date.now()+i;return`<div class="gimg"><img id="${id}" src="${img}"><button class="sv" onclick="dl(document.getElementById('${id}').src,'ib-image-${Date.now()}.png')">💾 Save</button></div>`}).join('');
 let t=who==='u'?(txt||'').replace(/</g,'&lt;').replace(/\n/g,'<br>'):fmt(txt||'');
@@ -177,7 +185,7 @@ let cf=[...F];add(text||'📎','u',cf);
 let uc=[];
 if(cf.length)for(let f of cf){if(f.t==='img')uc.push({type:'image_url',image_url:{url:f.d}});else uc.push({type:'text',text:'[File:'+f.n+']'})}
 if(text)uc.push({type:'text',text});
-H.push({role:'user',content:uc.length===1&&uc[0].type==='text'?text:uc});
+H.push({role:'user',content:uc.length===1&&uc[0].type==='text'?text:uc});saveCh();
 
 tx.value='';tx.style.height='auto';F=[];rF();sb.disabled=true;sT();
 
@@ -205,13 +213,22 @@ else if(typeof msg.content==='string'){txt=msg.content;let rx=/(data:image\/[a-z
 if(!txt&&imgs.length)txt='Here\'s your image:';
 if(!txt&&!imgs.length)txt='Done.';
 add(txt,'ai',null,imgs);
-if(!wImg)H.push({role:'assistant',content:msg.content})
+if(!wImg)H.push({role:'assistant',content:msg.content});saveCh()
 }else if(data.error){add('Error: '+(data.error.message||JSON.stringify(data.error)),'ai')}
 else{add('No response received.','ai')}
 }catch(e){hT();add('Connection error: '+e.message,'ai')}
 sb.disabled=false;tx.focus()}
 
 tx.focus();
+
+function showHist(){
+let modal=document.createElement('div');modal.id='histModal';
+modal.style.cssText='position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;animation:fi .2s ease';
+let list=chats.map(c=>`<div onclick="loadChat('${c.id}');document.getElementById('histModal').remove()" style="padding:10px 14px;background:var(--s1);border:1px solid rgba(139,92,246,.08);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:.15s;font-size:.82rem" onmouseover="this.style.borderColor='rgba(139,92,246,.3)'" onmouseout="this.style.borderColor='rgba(139,92,246,.08)'">${c.preview||'New Chat'} <span style="float:left;font-size:.65rem;color:var(--t3)">${c.date||''}</span></div>`).join('');
+if(!chats.length)list='<p style="color:var(--t2);text-align:center;padding:20px">No chat history yet</p>';
+modal.innerHTML=`<div style="background:var(--s1);border:1px solid rgba(139,92,246,.1);border-radius:16px;padding:20px;width:90%;max-width:380px;max-height:70vh;overflow-y:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:.95rem">Chat History</h3><button onclick="document.getElementById('histModal').remove()" style="background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer">✕</button></div>${list}</div>`;
+document.body.appendChild(modal);modal.onclick=e=>{if(e.target===modal)modal.remove()}}
+
 </script>
 </body>
 </html>
