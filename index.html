@@ -2,207 +2,213 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Agent GPT Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>IB - AI Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--p:#7c5cfc;--p2:#a78bfa;--bg:#09090f;--s1:#12121e;--s2:#1a1a2e;--t1:#fff;--t2:#9ca3af;--g:linear-gradient(135deg,#7c5cfc,#06b6d4);--r:12px}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--t1);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+:root{--bg:#050508;--s1:#0d0d14;--s2:#15151f;--s3:#1e1e2d;--t1:#f0f0f5;--t2:#8b8ba0;--t3:#5b5b70;--p:#8b5cf6;--p2:#a78bfa;--p3:#c4b5fd;--g1:linear-gradient(135deg,#8b5cf6,#06b6d4);--g2:linear-gradient(135deg,#0d0d14,#15151f);--gl:rgba(139,92,246,.06);--gb:rgba(139,92,246,.12);--r:16px;--r2:12px;--r3:8px;--shadow:0 8px 32px rgba(0,0,0,.4)}
+body{font-family:'Inter','Tajawal',sans-serif;background:var(--bg);color:var(--t1);height:100dvh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
 
-/* BG */
-.bgx{position:fixed;inset:0;pointer-events:none;z-index:0}
-.bgx i{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:fl 12s ease-in-out infinite}
-.bgx i:nth-child(1){width:600px;height:600px;background:#7c5cfc;top:-200px;right:-200px}
-.bgx i:nth-child(2){width:450px;height:450px;background:#06b6d4;bottom:-150px;left:-150px;animation-delay:5s}
-@keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-15px)}}
+.noise{position:fixed;inset:0;opacity:.02;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(150px);opacity:.07;pointer-events:none;animation:gf 20s ease-in-out infinite}
+.glow.a{background:#8b5cf6;top:-200px;right:-200px}
+.glow.b{background:#06b6d4;bottom:-200px;left:-200px;animation-delay:10s}
+@keyframes gf{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,30px)}}
 
 /* Header */
-.hd{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(18,18,30,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,92,252,.1)}
-.hd-l{display:flex;align-items:center;gap:10px}
-.hd-l .ico{width:38px;height:38px;background:var(--g);border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:14px;box-shadow:0 4px 12px rgba(124,92,252,.3)}
-.hd-l h1{font-size:1.1rem;font-weight:700;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hd-r{display:flex;gap:8px;align-items:center}
-.badge{font-size:.7rem;padding:4px 10px;border-radius:12px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);color:#06b6d4;display:flex;align-items:center;gap:5px}
-.badge i{width:6px;height:6px;background:#06b6d4;border-radius:50%;animation:pk 2s infinite}
+header{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(13,13,20,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,92,246,.08)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;background:var(--g1);border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 16px rgba(139,92,246,.3)}
+.logo h1{font-size:1rem;font-weight:700;letter-spacing:-.3px}
+.logo span{font-size:.65rem;color:var(--t3);font-weight:400;display:block;margin-top:1px}
+.hdr-r{display:flex;gap:6px;align-items:center}
+.pill{font-size:.65rem;padding:4px 10px;border-radius:10px;display:flex;align-items:center;gap:4px}
+.pill.on{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:#10b981}
+.pill.on::before{content:'';width:5px;height:5px;background:#10b981;border-radius:50%;animation:pk 2s infinite}
 @keyframes pk{50%{opacity:.3}}
-.nbtn{font-size:.7rem;padding:4px 10px;border-radius:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;font-family:inherit;cursor:pointer}
+.clr-btn{font-size:.65rem;padding:4px 10px;border-radius:10px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:#f87171;font-family:inherit;cursor:pointer;transition:.15s}
+.clr-btn:hover{background:rgba(239,68,68,.12)}
 
 /* Chat */
-.cht{position:relative;z-index:10;flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
-.cht::-webkit-scrollbar{width:4px}
-.cht::-webkit-scrollbar-thumb{background:rgba(124,92,252,.2);border-radius:4px}
+.chat{position:relative;z-index:10;flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat::-webkit-scrollbar{width:3px}
+.chat::-webkit-scrollbar-thumb{background:rgba(139,92,246,.15);border-radius:3px}
 
 /* Welcome */
-.wlc{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:20px}
-.wlc .big{width:80px;height:80px;background:var(--g);border-radius:22px;display:grid;place-items:center;font-size:36px;margin-bottom:16px;box-shadow:0 12px 40px rgba(124,92,252,.25);animation:br 3s ease-in-out infinite}
-@keyframes br{50%{transform:scale(1.03)}}
-.wlc h2{font-size:1.5rem;margin-bottom:8px;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.wlc p{color:var(--t2);font-size:.9rem;max-width:380px;line-height:1.8;margin-bottom:24px}
-.sgrd{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:420px;width:100%}
-.sg{background:rgba(26,26,46,.8);border:1px solid rgba(124,92,252,.1);border-radius:10px;padding:12px;cursor:pointer;transition:.2s;text-align:right}
-.sg:hover{border-color:var(--p);background:rgba(124,92,252,.05);transform:translateY(-1px)}
-.sg b{display:block;font-size:18px;margin-bottom:3px}
-.sg span{font-size:.72rem;color:var(--t2)}
+.wl{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:24px 16px;animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.wl-ico{width:72px;height:72px;background:var(--g1);border-radius:20px;display:grid;place-items:center;font-size:32px;margin-bottom:20px;box-shadow:0 12px 40px rgba(139,92,246,.2),inset 0 1px 1px rgba(255,255,255,.1)}
+.wl h2{font-size:1.5rem;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+.wl h2 span{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.wl p{color:var(--t2);font-size:.85rem;max-width:360px;line-height:1.7;margin-bottom:28px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:400px;width:100%}
+.card{background:var(--s1);border:1px solid rgba(139,92,246,.08);border-radius:var(--r2);padding:14px;cursor:pointer;transition:.2s;text-align:right;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:var(--g1);opacity:0;transition:.3s}
+.card:hover{border-color:rgba(139,92,246,.25);transform:translateY(-2px)}.card:hover::before{opacity:.03}
+.card b{font-size:20px;display:block;margin-bottom:4px}
+.card span{font-size:.7rem;color:var(--t2);position:relative}
 
-/* Msg */
-.m{display:flex;gap:9px;max-width:80%;animation:mi .2s ease}
-@keyframes mi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.m.u{align-self:flex-start}
-.m.b{align-self:flex-end;flex-direction:row-reverse}
-.m .a{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:13px;flex-shrink:0}
-.m.u .a{background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.15)}
-.m.b .a{background:var(--g);box-shadow:0 2px 8px rgba(124,92,252,.2)}
-.m .c{padding:10px 14px;border-radius:var(--r);line-height:1.7;font-size:.87rem;word-wrap:break-word}
-.m.u .c{background:rgba(124,92,252,.06);border:1px solid rgba(124,92,252,.1);border-top-right-radius:3px}
-.m.b .c{background:var(--s1);border:1px solid rgba(255,255,255,.03);border-top-left-radius:3px}
-.m.b .c code{background:rgba(124,92,252,.1);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.8rem}
-.m.b .c pre{background:rgba(0,0,0,.4);padding:10px;border-radius:8px;overflow-x:auto;margin:6px 0;font-family:monospace;font-size:.78rem;line-height:1.5;direction:ltr;text-align:left}
+/* Messages */
+.msg{display:flex;gap:8px;max-width:78%;animation:mi .2s ease}
+@keyframes mi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.msg.u{align-self:flex-start}
+.msg.ai{align-self:flex-end;flex-direction:row-reverse}
+.msg .av{width:28px;height:28px;border-radius:var(--r3);display:grid;place-items:center;font-size:12px;flex-shrink:0}
+.msg.u .av{background:var(--s2);border:1px solid rgba(139,92,246,.1)}
+.msg.ai .av{background:var(--g1);box-shadow:0 2px 8px rgba(139,92,246,.15)}
+.msg .tx{padding:10px 14px;border-radius:var(--r2);font-size:.84rem;line-height:1.75;word-wrap:break-word}
+.msg.u .tx{background:var(--s1);border:1px solid rgba(139,92,246,.06);border-top-right-radius:3px}
+.msg.ai .tx{background:var(--s2);border:1px solid rgba(255,255,255,.02);border-top-left-radius:3px}
+.msg.ai .tx code{background:rgba(139,92,246,.1);padding:1px 5px;border-radius:4px;font-size:.78rem;font-family:'JetBrains Mono',monospace}
+.msg.ai .tx pre{background:rgba(0,0,0,.4);padding:10px;border-radius:var(--r3);overflow-x:auto;margin:6px 0;font-size:.76rem;line-height:1.5;direction:ltr;text-align:left;border:1px solid rgba(139,92,246,.05)}
 
-/* Images */
-.gimg{margin-top:8px;position:relative;display:inline-block}
-.gimg img{max-width:300px;max-height:300px;border-radius:10px;border:2px solid rgba(124,92,252,.25);box-shadow:0 6px 20px rgba(0,0,0,.5)}
-.gimg .dl{position:absolute;bottom:8px;left:8px;background:var(--g);border:none;border-radius:7px;padding:5px 10px;color:#fff;font-size:.7rem;font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.gimg .dl:hover{transform:scale(1.05)}
 .fpv{margin-bottom:5px}
-.fpv img{max-width:200px;border-radius:8px;border:1px solid rgba(124,92,252,.15)}
+.fpv img{max-width:200px;border-radius:var(--r3);border:1px solid rgba(139,92,246,.1)}
+.gimg{margin-top:8px;position:relative;display:inline-block}
+.gimg img{max-width:280px;max-height:280px;border-radius:var(--r2);border:1px solid rgba(139,92,246,.2);box-shadow:var(--shadow)}
+.gimg .sv{position:absolute;bottom:8px;left:8px;background:var(--g1);border:none;border-radius:var(--r3);padding:5px 10px;color:#fff;font-size:.68rem;font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.5);transition:.15s}
+.gimg .sv:hover{transform:scale(1.05)}
 
 /* Typing */
-.tp{display:flex;gap:9px;align-self:flex-end;flex-direction:row-reverse}
-.tp .a{width:30px;height:30px;border-radius:8px;background:var(--g);display:grid;place-items:center;font-size:13px}
-.tp .d{display:flex;gap:3px;align-items:center;padding:10px 14px;background:var(--s1);border:1px solid rgba(255,255,255,.03);border-radius:var(--r);border-top-left-radius:3px}
-.tp .d i{width:6px;height:6px;background:var(--p2);border-radius:50%;animation:jm 1.2s infinite}
-.tp .d i:nth-child(2){animation-delay:.15s}
-.tp .d i:nth-child(3){animation-delay:.3s}
-@keyframes jm{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.tp{display:flex;gap:8px;align-self:flex-end;flex-direction:row-reverse}
+.tp .av{width:28px;height:28px;border-radius:var(--r3);background:var(--g1);display:grid;place-items:center;font-size:12px}
+.tp .dt{display:flex;gap:3px;align-items:center;padding:10px 14px;background:var(--s2);border:1px solid rgba(255,255,255,.02);border-radius:var(--r2);border-top-left-radius:3px}
+.tp .dt i{width:5px;height:5px;background:var(--p2);border-radius:50%;animation:jm 1.2s infinite}
+.tp .dt i:nth-child(2){animation-delay:.15s}.tp .dt i:nth-child(3){animation-delay:.3s}
+@keyframes jm{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-3px)}}
 
 /* Input */
-.inp-s{position:relative;z-index:10;padding:12px 18px 16px;background:rgba(18,18,30,.9);backdrop-filter:blur(12px);border-top:1px solid rgba(124,92,252,.08)}
-.atp{display:none;max-width:700px;margin:0 auto 6px;padding:6px 10px;background:rgba(124,92,252,.04);border:1px solid rgba(124,92,252,.1);border-radius:8px}
-.atp.on{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.ati{display:flex;align-items:center;gap:4px;background:var(--s1);border-radius:6px;padding:3px 7px;font-size:.7rem;color:var(--t2)}
-.ati img{width:28px;height:28px;border-radius:4px;object-fit:cover}
-.ati .x{cursor:pointer;color:#ef4444;font-size:11px}
-.inb{display:flex;align-items:flex-end;gap:7px;max-width:700px;margin:0 auto;background:var(--s2);border:1px solid rgba(124,92,252,.1);border-radius:var(--r);padding:7px 9px 7px 12px;transition:.2s}
-.inb:focus-within{border-color:var(--p);box-shadow:0 0 12px rgba(124,92,252,.08)}
-.inb textarea{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:inherit;font-size:.87rem;resize:none;max-height:80px;padding:6px 0;line-height:1.5}
-.inb textarea::placeholder{color:var(--t2)}
-.abtn{width:34px;height:34px;border-radius:8px;background:rgba(124,92,252,.08);border:1px solid rgba(124,92,252,.12);display:grid;place-items:center;cursor:pointer;transition:.2s}
-.abtn:hover{background:rgba(124,92,252,.15)}
-.abtn svg{width:15px;height:15px;stroke:var(--t2);fill:none;stroke-width:2}
-.sbtn{width:36px;height:36px;background:var(--g);border:none;border-radius:8px;display:grid;place-items:center;cursor:pointer;transition:.2s;flex-shrink:0}
-.sbtn:hover{transform:scale(1.05)}
-.sbtn:disabled{opacity:.3;cursor:not-allowed;transform:none}
-.sbtn svg{width:15px;height:15px;fill:#fff;transform:rotate(180deg)}
-.ft{text-align:center;margin-top:4px;font-size:.6rem;color:var(--t2);opacity:.4}
+.inp-w{position:relative;z-index:20;padding:12px 16px 16px;background:rgba(13,13,20,.9);backdrop-filter:blur(20px);border-top:1px solid rgba(139,92,246,.06)}
+.atp{display:none;max-width:680px;margin:0 auto 6px;padding:5px 8px;background:var(--s1);border:1px solid rgba(139,92,246,.08);border-radius:var(--r3)}
+.atp.on{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.ati{display:flex;align-items:center;gap:4px;background:var(--s2);border-radius:6px;padding:3px 7px;font-size:.67rem;color:var(--t2)}
+.ati img{width:24px;height:24px;border-radius:4px;object-fit:cover}
+.ati .x{cursor:pointer;color:#f87171;font-size:10px;margin-right:2px}
+.inb{display:flex;align-items:flex-end;gap:6px;max-width:680px;margin:0 auto;background:var(--s1);border:1px solid rgba(139,92,246,.08);border-radius:var(--r2);padding:6px 8px 6px 12px;transition:.2s}
+.inb:focus-within{border-color:rgba(139,92,246,.25);box-shadow:0 0 20px rgba(139,92,246,.05)}
+.inb textarea{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:inherit;font-size:.84rem;resize:none;max-height:80px;padding:7px 0;line-height:1.5}
+.inb textarea::placeholder{color:var(--t3)}
+.ibtn{width:32px;height:32px;border-radius:var(--r3);display:grid;place-items:center;cursor:pointer;transition:.15s;border:none;background:none}
+.ibtn.at{background:var(--s2);border:1px solid rgba(139,92,246,.08)}
+.ibtn.at:hover{border-color:rgba(139,92,246,.2)}
+.ibtn.at svg{width:14px;height:14px;stroke:var(--t2);fill:none;stroke-width:2}
+.ibtn.sd{background:var(--g1);box-shadow:0 2px 8px rgba(139,92,246,.2)}
+.ibtn.sd:hover{transform:scale(1.05)}
+.ibtn.sd:disabled{opacity:.3;transform:none;cursor:not-allowed}
+.ibtn.sd svg{width:14px;height:14px;fill:#fff;transform:rotate(180deg)}
+.ft{text-align:center;margin-top:5px;font-size:.58rem;color:var(--t3);letter-spacing:.3px}
 #fi{display:none}
 
-@media(max-width:600px){.sgrd{grid-template-columns:1fr}.m{max-width:90%}.gimg img{max-width:240px}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.msg{max-width:90%}.wl h2{font-size:1.3rem}.gimg img{max-width:220px}}
 </style>
 </head>
 <body>
-<div class="bgx"><i></i><i></i></div>
+<div class="noise"></div>
+<div class="glow a"></div>
+<div class="glow b"></div>
 
-<header class="hd">
-<div class="hd-l"><div class="ico">AI</div><h1>Agent GPT Pro</h1></div>
-<div class="hd-r"><div class="badge"><i></i>متصل</div><button class="nbtn" onclick="clr()">جديدة</button></div>
+<header>
+<div class="logo"><div class="logo-mark">IB</div><div><h1>IB AI</h1><span>Powered by DeepSeek + Flux</span></div></div>
+<div class="hdr-r"><div class="pill on">Online</div><button class="clr-btn" onclick="clr()">New Chat</button></div>
 </header>
 
-<div class="cht" id="ch">
-<div class="wlc" id="wl">
-<div class="big">🤖</div>
-<h2>Agent GPT Pro</h2>
-<p>مساعدك الذكي الاحترافي - أنشئ صوراً، عدّلها، اكتب أكواد، واسأل أي شيء. ارفع صورة أو اكتب وصفاً!</p>
-<div class="sgrd">
-<div class="sg" onclick="go('ارسم لي منظر طبيعي جميل عند غروب الشمس')"><b>🎨</b><span>ارسم منظر طبيعي</span></div>
-<div class="sg" onclick="go('صمم شعار احترافي لتطبيق اسمه Nova')"><b>✨</b><span>صمم شعار</span></div>
-<div class="sg" onclick="go('اكتب كود JavaScript لإنشاء لعبة بسيطة')"><b>💻</b><span>اكتب كود</span></div>
-<div class="sg" onclick="go('اشرح لي الذكاء الاصطناعي ببساطة')"><b>🧠</b><span>اشرح مفهوم</span></div>
+<div class="chat" id="ch">
+<div class="wl" id="wl">
+<div class="wl-ico">✦</div>
+<h2>Welcome to <span>IB</span></h2>
+<p>Your intelligent AI assistant — chat, create images, analyze files, and get answers in any language. Fast, smart, and affordable.</p>
+<div class="cards">
+<div class="card" onclick="go('Create a beautiful sunset landscape painting')"><b>🎨</b><span>Generate Image</span></div>
+<div class="card" onclick="go('Write a Python script for web scraping')"><b>💻</b><span>Write Code</span></div>
+<div class="card" onclick="go('Explain quantum computing simply')"><b>🧠</b><span>Explain Concept</span></div>
+<div class="card" onclick="go('Design a modern logo for a tech startup called Nova')"><b>✨</b><span>Design Logo</span></div>
 </div>
 </div>
 </div>
 
-<div class="inp-s">
+<div class="inp-w">
 <div class="atp" id="ap"></div>
 <div class="inb">
-<label class="abtn" for="fi"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></label>
+<label class="ibtn at" for="fi"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></label>
 <input type="file" id="fi" multiple accept="image/*,.pdf,.txt,.csv,.json,.js,.py" onchange="onF(event)">
-<textarea id="tx" placeholder="اكتب هنا أو صف الصورة..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();go()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
-<button class="sbtn" id="sb" onclick="go()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+<textarea id="tx" placeholder="Message IB..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();go()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+<button class="ibtn sd" id="sb" onclick="go()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
 </div>
-<div class="ft">Agent GPT Pro — محادثة + إنشاء صور بالذكاء الاصطناعي</div>
+<div class="ft">IB AI · DeepSeek Chat · Flux Image Generation · OpenRouter</div>
 </div>
 
 <script>
 const K=atob('c2stb3ItdjEtMGFkZmYwOTViMTAzNDY4MThmZjA3MGZmZTk5ZTdlMWYxZTgwZWY3ZGIwM2YyMjRlZGY0ZjMyODhjNDhhZjI0YQ==');
 const U='https://openrouter.ai/api/v1/chat/completions';
+const CHAT_MODEL='deepseek/deepseek-chat-v3-0324';
+const IMG_MODEL='black-forest-labs/flux-schnell';
+
 const ch=document.getElementById('ch'),tx=document.getElementById('tx'),sb=document.getElementById('sb'),ap=document.getElementById('ap');
 let H=[],F=[];
 
 function onF(e){for(let f of e.target.files){let r=new FileReader(),img=f.type.startsWith('image/');r.onload=x=>{F.push({t:img?'img':'f',n:f.name,d:x.target.result});rF()};r.readAsDataURL(f)}e.target.value=''}
 function rF(){if(!F.length){ap.className='atp';return}ap.className='atp on';ap.innerHTML=F.map((f,i)=>f.t==='img'?`<div class="ati"><img src="${f.d}"><span>${f.n}</span><span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`:`<div class="ati">📄 ${f.n}<span class="x" onclick="F.splice(${i},1);rF()">✕</span></div>`).join('')}
 
-function clr(){H=[];F=[];ch.innerHTML='<div class="wlc" id="wl"><div class="big">🤖</div><h2>Agent GPT Pro</h2><p>مساعدك الذكي - أنشئ صوراً، عدّلها، واسأل أي شيء!</p><div class="sgrd"><div class="sg" onclick="go(\'ارسم لي منظر طبيعي جميل\')"><b>🎨</b><span>ارسم صورة</span></div><div class="sg" onclick="go(\'صمم شعار احترافي\')"><b>✨</b><span>صمم شعار</span></div><div class="sg" onclick="go(\'اكتب كود JavaScript\')"><b>💻</b><span>اكتب كود</span></div><div class="sg" onclick="go(\'اشرح الذكاء الاصطناعي\')"><b>🧠</b><span>اشرح مفهوم</span></div></div></div>';rF()}
+function clr(){H=[];F=[];ch.innerHTML='<div class="wl" id="wl"><div class="wl-ico">✦</div><h2>Welcome to <span>IB</span></h2><p>Your intelligent AI assistant — chat, create images, analyze files.</p><div class="cards"><div class="card" onclick="go(\'Create a beautiful sunset painting\')"><b>🎨</b><span>Generate Image</span></div><div class="card" onclick="go(\'Write Python code\')"><b>💻</b><span>Write Code</span></div><div class="card" onclick="go(\'Explain AI simply\')"><b>🧠</b><span>Explain</span></div><div class="card" onclick="go(\'Design a logo\')"><b>✨</b><span>Design</span></div></div></div>';rF()}
 
 function dl(u,n){let a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove()}
-
-function fmt(t){
-t=t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');
-t=t.replace(/`([^`]+)`/g,'<code>$1</code>');
-t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-t=t.replace(/\n/g,'<br>');return t}
+function fmt(t){t=t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');t=t.replace(/`([^`]+)`/g,'<code>$1</code>');t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');t=t.replace(/\n/g,'<br>');return t}
 
 function add(txt,who,files,imgs){
 let w=document.getElementById('wl');if(w)w.remove();
-let d=document.createElement('div');d.className='m '+(who==='u'?'u':'b');
+let d=document.createElement('div');d.className='msg '+(who==='u'?'u':'ai');
 let fh='';if(files&&files.length)fh='<div class="fpv">'+files.map(f=>f.t==='img'?`<img src="${f.d}">`:`<span>📄${f.n}</span>`).join('')+'</div>';
-let ih='';if(imgs&&imgs.length)ih=imgs.map((img,i)=>{let id='gi'+Date.now()+i;return`<div class="gimg"><img id="${id}" src="${img}"><button class="dl" onclick="dl(document.getElementById('${id}').src,'image-${Date.now()}.png')">💾 حفظ</button></div>`}).join('');
-let t=who==='u'?(txt||'').replace(/\n/g,'<br>'):fmt(txt||'');
-d.innerHTML=`<div class="a">${who==='u'?'👤':'🤖'}</div><div class="c">${fh}${t}${ih}</div>`;
+let ih='';if(imgs&&imgs.length)ih=imgs.map((img,i)=>{let id='gi'+Date.now()+i;return`<div class="gimg"><img id="${id}" src="${img}"><button class="sv" onclick="dl(document.getElementById('${id}').src,'ib-image-${Date.now()}.png')">💾 Save</button></div>`}).join('');
+let t=who==='u'?(txt||'').replace(/</g,'&lt;').replace(/\n/g,'<br>'):fmt(txt||'');
+d.innerHTML=`<div class="av">${who==='u'?'👤':'✦'}</div><div class="tx">${fh}${t}${ih}</div>`;
 ch.appendChild(d);ch.scrollTop=ch.scrollHeight}
 
-function sTyp(){let d=document.createElement('div');d.className='tp';d.id='ty';d.innerHTML='<div class="a">🤖</div><div class="d"><i></i><i></i><i></i></div>';ch.appendChild(d);ch.scrollTop=ch.scrollHeight}
-function hTyp(){let t=document.getElementById('ty');if(t)t.remove()}
+function sT(){let d=document.createElement('div');d.className='tp';d.id='ty';d.innerHTML='<div class="av">✦</div><div class="dt"><i></i><i></i><i></i></div>';ch.appendChild(d);ch.scrollTop=ch.scrollHeight}
+function hT(){let t=document.getElementById('ty');if(t)t.remove()}
 
-function isImg(t){return/ارسم|صمم|أنشئ صورة|اصنع|عدل|غير|حول|شعار|لوجو|بوستر|خلفية|رسم|تصميم|draw|design|generate|create|edit|make image|paint/i.test(t)}
+function isImg(t){return/draw|paint|image|picture|photo|design|logo|illustration|poster|wallpaper|create.*visual|generate|ارسم|صمم|صورة|شعار|لوجو|خلفية|بوستر|رسم|تصميم|أنشئ صورة|اصنع/i.test(t)}
 
 async function go(t){
 if(t)tx.value=t;
 let text=tx.value.trim();if(!text&&!F.length)return;
-let cf=[...F];add(text||'مرفق','u',cf);
+let cf=[...F];add(text||'📎','u',cf);
 
 let uc=[];
-if(cf.length)for(let f of cf){if(f.t==='img')uc.push({type:'image_url',image_url:{url:f.d}});else uc.push({type:'text',text:'[ملف:'+f.n+']'})}
+if(cf.length)for(let f of cf){if(f.t==='img')uc.push({type:'image_url',image_url:{url:f.d}});else uc.push({type:'text',text:'[File:'+f.n+']'})}
 if(text)uc.push({type:'text',text});
 H.push({role:'user',content:uc.length===1&&uc[0].type==='text'?text:uc});
 
-tx.value='';tx.style.height='auto';F=[];rF();sb.disabled=true;sTyp();
+tx.value='';tx.style.height='auto';F=[];rF();sb.disabled=true;sT();
 
 let wImg=isImg(text);
-let sys={role:'system',content:'أنت Agent GPT Pro، مساعد ذكاء اصطناعي محترف. تتحدث العربية. عند طلب صورة أنشئها مباشرة. كن مفيداً ومفصلاً.'};
+let sys={role:'system',content:'You are IB, a professional AI assistant. You help with coding, writing, analysis, and creative tasks. Respond in the same language the user writes in. Be concise, helpful, and professional.'};
 
 try{
-let body={model:'openai/gpt-4o',messages:[sys,...H],max_tokens:4096};
-if(!wImg)body.temperature=0.7;
-if(wImg){body.model='openai/gpt-5-image';body.modalities=['text','image']}
+let body;
+if(wImg){
+body={model:IMG_MODEL,messages:[{role:'user',content:text}],modalities:['image'],max_tokens:1024};
+}else{
+body={model:CHAT_MODEL,messages:[sys,...H],temperature:0.7,max_tokens:4096};
+}
 
-let r=await fetch(U,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+K,'HTTP-Referer':location.href,'X-Title':'Agent GPT Pro'},body:JSON.stringify(body)});
-hTyp();
+let r=await fetch(U,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+K,'HTTP-Referer':location.href,'X-Title':'IB AI'},body:JSON.stringify(body)});
+hT();
 
-if(!r.ok){let e=await r.text();add('خطأ '+r.status+': '+e.substring(0,100),'b');sb.disabled=false;return}
+if(!r.ok){let e=await r.text();add('Error '+r.status+': '+e.substring(0,120),'ai');sb.disabled=false;return}
 
 let data=await r.json();
 if(data.choices&&data.choices[0]){
 let msg=data.choices[0].message,txt='',imgs=[];
 if(Array.isArray(msg.content)){for(let p of msg.content){if(p.type==='text')txt+=p.text;else if(p.type==='image_url'&&p.image_url)imgs.push(p.image_url.url)}}
 else if(typeof msg.content==='string'){txt=msg.content;let rx=/(data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+)/g,found=txt.match(rx);if(found){imgs=found;txt=txt.replace(rx,'').trim()}}
-if(!txt&&imgs.length)txt='تم إنشاء الصورة! اضغط حفظ لتحميلها:';
-if(!txt&&!imgs.length)txt='تم.';
-add(txt,'b',null,imgs);
-H.push({role:'assistant',content:msg.content})
-}else if(data.error){add('خطأ: '+(data.error.message||JSON.stringify(data.error)),'b')}
-else{add('لا يوجد رد.','b')}
-}catch(e){hTyp();add('خطأ اتصال: '+e.message,'b')}
+if(!txt&&imgs.length)txt='Here\'s your image:';
+if(!txt&&!imgs.length)txt='Done.';
+add(txt,'ai',null,imgs);
+if(!wImg)H.push({role:'assistant',content:msg.content})
+}else if(data.error){add('Error: '+(data.error.message||JSON.stringify(data.error)),'ai')}
+else{add('No response received.','ai')}
+}catch(e){hT();add('Connection error: '+e.message,'ai')}
 sb.disabled=false;tx.focus()}
 
 tx.focus();
