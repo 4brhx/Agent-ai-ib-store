@@ -20,7 +20,7 @@
 </div>
 <div class="hdr-actions">
 <div class="status-dot"></div>
-<button class="hdr-btn" onclick="openSettings()"><svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.25.42.5.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.58 1.69-.98l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64z"/></svg><span>Settings</span></button>
+<button class="hdr-btn" onclick="openSettings()"><svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.25.42.5.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.58 1.69-.98l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64z"/></svg><span>About</span></button>
 <button class="hdr-btn" onclick="openHistory()"><svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8z"/></svg><span>History</span></button>
 <button class="hdr-btn danger" onclick="newConversation()"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg><span>New</span></button>
 </div>
@@ -391,14 +391,11 @@ header{padding:12px 16px}
 </style>`);
 </script>
 <script>
-// Configuration
+// Configuration - API keys are stored in Vercel environment variables
 const CONFIG = {
-  deepseekKey: localStorage.getItem('ib_deepseek_key') || '',
-  geminiKey: localStorage.getItem('ib_gemini_key') || '',
   deepseekModel: 'deepseek/deepseek-chat-v3-0324',
-  geminiModel: 'gemini-2.0-flash',
-  openrouterUrl: 'https://openrouter.ai/api/v1/chat/completions',
-  geminiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/'
+  chatEndpoint: '/api/chat',
+  visionEndpoint: '/api/vision'
 };
 
 // State
@@ -580,18 +577,6 @@ async function sendMessage() {
   const text = msgInput.value.trim();
   if (!text && !attachments.length) return;
 
-  // Check API keys
-  if (!CONFIG.deepseekKey && !hasImages()) {
-    addMessage('⚠️ يرجى إدخال مفتاح OpenRouter API في الإعدادات للمحادثات النصية.', 'bot');
-    openSettings();
-    return;
-  }
-  if (hasImages() && !CONFIG.geminiKey) {
-    addMessage('⚠️ يرجى إدخال مفتاح Gemini API في الإعدادات لتحليل الصور.', 'bot');
-    openSettings();
-    return;
-  }
-
   const currentFiles = [...attachments];
   addMessage(text || '📎 صورة', 'user', currentFiles);
 
@@ -634,7 +619,7 @@ async function sendMessage() {
   msgInput.focus();
 }
 
-// Call DeepSeek via OpenRouter
+// Call DeepSeek via API route
 async function callDeepSeek(text) {
   const systemMsg = {
     role: 'system',
@@ -642,7 +627,6 @@ async function callDeepSeek(text) {
   };
 
   const chatMessages = [systemMsg];
-  // Add recent context (last 10 messages)
   const recentMsgs = messages.slice(-10);
   for (const m of recentMsgs) {
     if (m.role === 'user') {
@@ -652,37 +636,26 @@ async function callDeepSeek(text) {
     }
   }
 
-  const res = await fetch(CONFIG.openrouterUrl, {
+  const res = await fetch(CONFIG.chatEndpoint, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + CONFIG.deepseekKey,
-      'HTTP-Referer': location.href,
-      'X-Title': 'IB Agent'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: CONFIG.deepseekModel,
-      messages: chatMessages,
-      temperature: 0.7,
-      max_tokens: 4096
+      messages: chatMessages
     })
   });
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`API Error ${res.status}: ${errText.substring(0, 150)}`);
-  }
-
   const data = await res.json();
-  if (data.error) throw new Error(data.error.message || 'Unknown API error');
+  if (!res.ok) throw new Error(data.error || `API Error ${res.status}`);
+  if (data.error) throw new Error(data.error);
   return data.choices?.[0]?.message?.content || 'لم أتمكن من الرد.';
 }
 
-// Call Gemini Flash for image analysis
+// Call Gemini Flash via API route
 async function callGemini(text, files) {
   const parts = [];
 
-  if (text) parts.push({ text: text || 'حلل هذه الصورة بالتفصيل' });
+  if (text) parts.push({ text: text });
 
   for (const file of files) {
     const base64 = file.data.split(',')[1];
@@ -697,27 +670,15 @@ async function callGemini(text, files) {
 
   if (!text) parts.unshift({ text: 'حلل هذه الصورة بالتفصيل وأعطني وصفاً شاملاً لمحتواها' });
 
-  const url = `${CONFIG.geminiUrl}${CONFIG.geminiModel}:generateContent?key=${CONFIG.geminiKey}`;
-
-  const res = await fetch(url, {
+  const res = await fetch(CONFIG.visionEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts }],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 4096
-      }
-    })
+    body: JSON.stringify({ parts })
   });
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Gemini Error ${res.status}: ${errText.substring(0, 150)}`);
-  }
-
   const data = await res.json();
-  if (data.error) throw new Error(data.error.message || 'Gemini error');
+  if (!res.ok) throw new Error(data.error || `Gemini Error ${res.status}`);
+  if (data.error) throw new Error(data.error);
 
   const candidate = data.candidates?.[0];
   if (!candidate) throw new Error('لا يوجد رد من Gemini');
@@ -725,7 +686,7 @@ async function callGemini(text, files) {
   return candidate.content?.parts?.map(p => p.text).join('') || 'لم أتمكن من تحليل الصورة.';
 }
 
-// Settings Modal
+// Settings/About Modal
 function openSettings() {
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -733,33 +694,27 @@ function openSettings() {
   overlay.onclick = (e) => { if (e.target === overlay) closeModal(); };
   overlay.innerHTML = `
     <div class="modal">
-      <h3>⚙️ الإعدادات <button onclick="closeModal()">✕</button></h3>
+      <h3>ℹ️ حول IB Agent <button onclick="closeModal()">✕</button></h3>
       <div class="settings-grid">
         <div class="setting-item">
-          <label>🔑 OpenRouter API Key (DeepSeek)</label>
-          <input type="password" id="setDeepseek" placeholder="sk-or-..." value="${CONFIG.deepseekKey}">
+          <label>🤖 محرك المحادثات</label>
+          <input type="text" value="DeepSeek V3 (via OpenRouter)" readonly style="opacity:.7;cursor:default">
         </div>
         <div class="setting-item">
-          <label>🔑 Google Gemini API Key</label>
-          <input type="password" id="setGemini" placeholder="AIza..." value="${CONFIG.geminiKey}">
+          <label>👁️ محرك تحليل الصور</label>
+          <input type="text" value="Gemini 2.0 Flash" readonly style="opacity:.7;cursor:default">
         </div>
-        <button class="save-settings" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+        <div class="setting-item">
+          <label>🔐 المفاتيح</label>
+          <input type="text" value="محفوظة في متغيرات البيئة ✓" readonly style="opacity:.7;cursor:default;color:#06d6a0">
+        </div>
       </div>
     </div>
   `;
   document.body.appendChild(overlay);
 }
 
-function saveSettings() {
-  const dk = document.getElementById('setDeepseek').value.trim();
-  const gk = document.getElementById('setGemini').value.trim();
-  CONFIG.deepseekKey = dk;
-  CONFIG.geminiKey = gk;
-  localStorage.setItem('ib_deepseek_key', dk);
-  localStorage.setItem('ib_gemini_key', gk);
-  closeModal();
-  addMessage('✅ تم حفظ الإعدادات بنجاح!', 'bot');
-}
+function saveSettings() { closeModal(); }
 
 // History Modal
 function openHistory() {
