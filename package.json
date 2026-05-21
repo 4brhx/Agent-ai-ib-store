@@ -100,7 +100,7 @@
     "webpack": "^5.104.1"
   },
   "optionalDependencies": {
-    "crisp-sdk-web": "^1.0.25"
+    "crisp-sdk-web": "^1.1.2"
   },
   "pnpm": {
     "overrides": {
