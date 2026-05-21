@@ -1,70 +1,7 @@
-.next
-.source
-node_modules
-.vercel
-next-env.d.ts
-.env.local
+node_modules/
+.next/
+out/
 .env
-.env*.local
-
-# next sitemap
-public/robots.txt
-public/sitemap*.xml
-
-# we use pnpm
-package-lock.json
-yarn.lock
-bun.lockb
-
-# Mac
-.DS_Store
-
-# eslint
-.eslintcache
-
-# Testing & debugging artifacts
-test-results/
-playwright-report/
-tests/
-sidebar-final-audit/
-
-# AI Assistants
-/.claude/
-/.cursor/
-/.copilot/
-/.aider/
-/.openai/
-/.tabnine/
-/.codeium
-*.local.md
-
-# Background shell state
-.bg-shell/
-
-# Planning artifacts
-.planning/
-e2e/.planning/
-
-# Claude Flow generated files
-.claude/settings.local.json
-.mcp.json
-claude-flow.config.json
-.swarm/
-.hive-mind/
-.claude-flow/
-memory/claude-flow-data.json
-memory/sessions/*
-!memory/sessions/README.md
-memory/agents/*
-!memory/agents/README.md
-coordination/memory_bank/*
-coordination/subtasks/*
-coordination/orchestration/*
-*.db
-*.db-journal
-*.db-wal
-*.sqlite
-*.sqlite-journal
-*.sqlite-wal
-claude-flow
-hive-mind-prompt-*.txt
+.env.local
+*.tsbuildinfo
+next-env.d.ts
