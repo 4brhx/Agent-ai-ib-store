@@ -16,7 +16,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Valid email is required' }, { status: 422 })
     }
 
-    const { email } = body as { email: unknown }
+    const { email, name, category_id } = body as {
+      email: unknown
+      name?: string
+      category_id?: string
+    }
 
     if (!email || typeof email !== 'string' || !isValidEmail(email)) {
       return NextResponse.json({ message: 'Valid email is required' }, { status: 422 })
@@ -52,9 +56,17 @@ export async function POST(request: Request) {
     }
 
     // Insert new subscriber
-    const { error } = await supabase
-      .from('subscribers')
-      .insert({ email: normalized, status: 'subscribed' })
+    const insertData: Record<string, unknown> = {
+      email: normalized,
+      status: 'subscribed',
+      name: name || '',
+    }
+
+    if (category_id) {
+      insertData.category_id = category_id
+    }
+
+    const { error } = await supabase.from('subscribers').insert(insertData)
 
     if (error) {
       console.error('Subscription error:', error.message)
