@@ -3,7 +3,9 @@ import { useState, type FormEvent } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import style from './newsletterform.module.css'
 
-const isDevelopment = true //TODO
+const isDisabled =
+  typeof window !== 'undefined' &&
+  !process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED
 
 const SubscribeForm = () => {
   const [email, setEmail] = useState('')
@@ -51,16 +53,16 @@ const SubscribeForm = () => {
         <form onSubmit={handleSubmit} className={style[`form-container`]}>
           <input
             type="email"
-            placeholder={isDevelopment ? 'Coming soon...' : 'Enter your email'}
+            placeholder={isDisabled ? 'Coming soon...' : 'Enter your email'}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={style[`email-input`]}
-            readOnly={isDevelopment}
+            readOnly={!!isDisabled}
           />
           <button
             type="submit"
             className={style[`subscribe-button`]}
-            disabled={isLoading || isDevelopment}
+            disabled={isLoading || !!isDisabled}
           >
             {isLoading ? 'Subscribing...' : 'Subscribe'}
           </button>

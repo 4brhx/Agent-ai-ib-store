@@ -30,7 +30,7 @@ export const authors: Author[] = [
     id: 'berry',
     name: 'Berry',
     subtitle: 'Collaborator for LibreChat',
-    bio: '// TODO: Become a software engineer !self_taught++; // Debugging life, coding solutions',
+    bio: 'A passionate collaborator for LibreChat, dedicated to building great software and learning something new every day.',
     avatar: '/images/people/berry.png',
     socials: [
       { label: 'GitHub', url: 'https://github.com/Berry-13' },
