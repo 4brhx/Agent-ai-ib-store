@@ -34,7 +34,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@supabase/supabase-js": "^2.86.2",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.37.0",
+    "@upstash/redis": "^1.38.0",
     "@vercel/og": "^0.6.2",
     "@vidstack/react": "^0.6.15",
     "ace-builds": "^1.43.5",
